@@ -23,9 +23,9 @@
 |---|--------|-------------|-----------------|
 | 1 | ratemyprofessor - reviews on university - https://www.ratemyprofessors.com/school/198
 | 2 | reddit -  questions and answers not typically asked about ccsu - https://www.reddit.com/r/ccsu/
-| 3 niche - gives overall info on the university cost, students etc - https://www.niche.com/colleges/central-connecticut-state-university/
-| 4 us news - gives overall info on university safety and stats against other universities - https://www.usnews.com/best-colleges/central-connecticut-state-university-1378/student-life
- 5 ratemyprofessor - reviews on professors - https://www.ratemyprofessors.com/search/professors/198?q=*
+| 3 |niche - gives overall info on the university cost, students etc - https://www.niche.com/colleges/central-connecticut-state-university/
+| 4| us news - gives overall info on university safety and stats against other universities - https://www.usnews.com/best-colleges/central-connecticut-state-university-1378/student-life
+ |5| ratemyprofessor - reviews on professors - https://www.ratemyprofessors.com/search/professors/198?q=*
 
 <!-- counldnt find more >
 
