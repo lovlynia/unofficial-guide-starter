@@ -41,8 +41,8 @@ than collected anywhere official.
 | 10 | | | |
 
 > Note: Source #6 (US News) is listed in the plan but was **not retrievable** —
-> the page is protected by Akamai bot detection and returned no usable text via
-> automated scraping, so it was excluded from the final corpus. This directly
+> the page is protected and returned no usable text via
+> automated scraping, so it was excluded. This directly
 > caused the safety-question failure documented below.
 
 ---
