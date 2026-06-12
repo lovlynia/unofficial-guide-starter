@@ -10,7 +10,8 @@
 ## Domain
 
 <!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
-
+ 
+> the domain chosen is focused on ensuring students are able to get raw information -unhonest and unfiltered answers about Central CT State University and it's faculty , the channels chosen were based on Rate My Professor, Reddit, and Niche. It's hard to find info regarding this due to how small the school is 
 ---
 
 ## Documents
@@ -20,16 +21,13 @@
 
 | # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 | ratemyprofessor - reviews on university - https://www.ratemyprofessors.com/school/198
+| 2 | reddit -  questions and answers not typically asked about ccsu - https://www.reddit.com/r/ccsu/
+| 3 niche - gives overall info on the university cost, students etc - https://www.niche.com/colleges/central-connecticut-state-university/
+| 4 us news - gives overall info on university safety and stats against other universities - https://www.usnews.com/best-colleges/central-connecticut-state-university-1378/student-life
+ 5 ratemyprofessor - reviews on professors - https://www.ratemyprofessors.com/search/professors/198?q=*
+
+<!-- counldnt find more >
 
 ---
 
@@ -41,10 +39,12 @@
      A review-heavy corpus warrants different chunking than a long FAQ. -->
 
 **Chunk size:**
-
+>2 of them are long guides, while reddit and rate my professor are dynamic in sizing have some smaller paragraphs while other are much larger. And its throughout the page . I would chunk them by character. Since all the information will still have to be checked for relevancy. 
 **Overlap:**
+>overlap does exist with us news and niche rating of the school but both rate differently in the sense that it's okay to take both reports evaluation of the institution 
 
 **Reasoning:**
+> reasoning for these websites is that they are the most raw about the university and students opinions of them. And the U.S news is to be held as a credible source when it comes to evaluating the programs within it . 
 
 ---
 
@@ -57,10 +57,13 @@
      support, accuracy on domain-specific text, latency? -->
 
 **Embedding model:**
+> all-MiniLM-L6-v2 (384-dim) via sentence-transformers, run locally inside ChromaDB with cosine similarity. It's fast, free, fully local (no API key or rate limits), and strong on the short English review text that makes up most of my corpus.
 
 **Top-k:**
+> 5 chunks per query. Reviews are short, so pulling the 5 most similar chunks gives the model enough overlapping student opinions to summarize without flooding the prompt with off-topic text.
 
 **Production tradeoff reflection:**
+> If cost wasn't a constraint I'd consider a hosted model like OpenAI text-embedding-3-large or Cohere/Voyage. The upside: better accuracy on domain phrasing (nicknames, course codes), much longer context so the long Niche/US News guides wouldn't need such tight chunking, and multilingual support for international students. The downside: per-call latency, network dependency, ongoing API cost, and sending student content to a third party. For one small offline school project the local MiniLM model wins; hosted only pays off at larger scale.
 
 ---
 
@@ -73,11 +76,11 @@
 
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 | which professor is highly rated with the CS program ? - Hassan Md Rafiul 
+| 2 | which way does ccsu lean in commuter or living on campus? - commuter school 
+| 3 | which sociology professor has no notes in their lessons - John O'Connor 
+| 4 | hows ccsu safety ? in a surbuban town , public access to building , not dangerous 
+| 5 | how do students describe the school ? up to interpretation 
 
 ---
 
@@ -87,19 +90,34 @@
      Consider: noisy or inconsistent documents, missing source attribution, off-topic
      retrieval, chunks that split key information across boundaries. -->
 
-1.
+1. for Q5 it really depends on how students feel and what the ai has read 
 
-2.
+2. for q3 there are many professors that dont provide notes 
 
 ---
 
 ## Architecture
 
 <!-- Draw a diagram of your pipeline showing the five stages:
-     Document Ingestion → Chunking → Embedding + Vector Store → Retrieval → Generation
-     Label each stage with the tool or library you're using.
-     You can use ASCII art, a Mermaid diagram, or embed a sketch as an image.
-     You'll use this diagram as context when prompting AI tools to implement each stage. -->
+     Document Ingestion 
+       ---------------
+
+        web crawler 
+
+       -------------
+     → Chunking →
+     ----------------
+
+         LLM chunker
+
+     ----------------
+     Embedding + Vector Store 
+     -----------------------
+        database 
+        chromaDB
+     ------------------------
+     → Retrieval → Generation
+     
 
 ---
 
@@ -107,16 +125,14 @@
 
 <!-- For each part of the pipeline below, describe:
      - Which AI tool you plan to use (Claude, Copilot, ChatGPT, etc.)
-     - What you'll give it as input (which sections of this planning.md, which requirements)
-     - What you expect it to produce
-     - How you'll verify the output matches your spec
+     I plan to use copilot on claude 
 
-     "I'll use AI to help me code" is not a plan.
-     "I'll give Claude my Chunking Strategy section and ask it to implement chunk_text()
-     with my specified chunk size and overlap" is a plan. -->
 
 **Milestone 3 — Ingestion and chunking:**
+> Copilot (Claude) to build scraper.py and chunker.py. I gave it my source list and chunking notes; it generated the per-source scrapers (requests + BeautifulSoup, Playwright fallback for JS/blocked sites) and the character-based chunker. I directed the per-professor RateMyProfessors handling so each chunk keeps a name+department header.
 
 **Milestone 4 — Embedding and retrieval:**
+> Copilot (Claude) to wire up ingest.py with sentence-transformers (all-MiniLM-L6-v2) and a persistent ChromaDB collection, plus the retrieve()/build_context() helpers in app.py. I set top-k = 5 and cosine similarity.
 
 **Milestone 5 — Generation and interface:**
+> Copilot (Claude) for the FastAPI /chat endpoint (Groq llama-3.3-70b-versatile with a strict grounding system prompt + source attribution) and the React + TypeScript (Vite) chat UI that displays answers and their sources.
